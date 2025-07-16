@@ -20,12 +20,12 @@ def fetch_weather(lat, lon):
 
 def parse_data(data, loc):
     dt = datetime.utcfromtimestamp(data['dt']).strftime('%Y-%m-%d %H:%M:%S')
-    main = data.get('main', {})
-    wind = data.get('wind', {})
+    main   = data.get('main', {})
+    wind   = data.get('wind', {})
     clouds = data.get('clouds', {})
-    weather = data.get('weather', [{}])[0]
-    rain = data.get('rain', {}).get('1h', 0)
-    snow = data.get('snow', {}).get('1h', 0)
+    weather= data.get('weather', [{}])[0]
+    rain   = data.get('rain', {}).get('1h', 0)
+    snow   = data.get('snow', {}).get('1h', 0)
 
     return [
         loc['name'], dt, loc['lat'], loc['lon'],
@@ -63,6 +63,6 @@ if __name__ == '__main__':
     all_rows = []
     for loc in LOCATIONS:
         data = fetch_weather(loc['lat'], loc['lon'])
-        row = parse_data(data, loc)
+        row  = parse_data(data, loc)
         all_rows.append(row)
     write_csv(all_rows)
