@@ -1,18 +1,23 @@
 name: Weather data collector
 
+# ši sekcija leidžia Actions bot’ui rašyti į repozitoriją
+permissions:
+  contents: write
+
 on:
   schedule:
-    - cron: '0 * * * *'       # kas valandą
-  workflow_dispatch:         # rankiniam paleidimui
+    - cron: '0 * * * *'     # kas valandą, minutės 0
+  workflow_dispatch:       # rankinis paleidimas, jei reikia
 
 jobs:
   collect:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v3
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
           persist-credentials: true
 
       - name: Set up Python
@@ -28,7 +33,7 @@ jobs:
           OWM_API_KEY: ${{ secrets.OWM_API_KEY }}
         run: python weather.py
 
-      - name: Commit CSV file
+      - name: Commit and push CSV
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
